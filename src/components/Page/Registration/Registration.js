@@ -1,70 +1,41 @@
-import React, { Component } from 'react'
-import { Consumer } from '../../context/context'
-import { Redirect } from 'react-router-dom'
-import Video from '../../video'
-import FormTran from '../../FormTran'
+import React from 'react'
+import Video from '../../UI/video'
+import ContainerFromTran from '../../Container/ContainerFromTran'
 import Welcome from '../../Welcome'
-import Popup from '../../Popup/Popup'
+import Popup from '../../UI/Popup/Popup'
+import JokeGeneratorContainer from '../../jokeGenerator/JokeGenerator'
+import AlertTran from '../../UI/AlertTran/AlertTran'
 import './Registration.scss'
 
-class Registration extends Component {
-
-  state = {
-    popupActive: false,
-    goToPage: false
-  }
-
-  handlePopupToggle = () => {
-    this.setState((state) => {
-      return {
-        popupActive: !state.popupActive
+const Registration = (props) => {
+  return (
+    <React.Fragment>
+      <Video>
+        <section className="Intro">
+          <div className="Container">
+            <div className="Intro-Inner">
+              <Welcome />
+              <div className="Intro-Box">
+                <ContainerFromTran activePupop={props.popupToggle} />
+                <JokeGeneratorContainer joke={props.joke} />
+              </div>
+            </div>
+          </div>
+        </section>
+      </Video>
+      {
+        props.popupActive ? <Popup
+          title="Регистрация прошла успешно"
+          activePupop={props.popupToggle}
+          handleClickPopupButton={props.goToPageOurList} /> : null
       }
-    })
-  }
-
-  handleGoToPage = () => {
-    this.setState({ goToPage: true })
-  }
-
-  render() {
-    return (
-      <Consumer>
-        {
-          (context) => {
-            const { addUser } = context
-
-            if (this.state.goToPage) {
-              return <Redirect to="/user-list" />
-            }
-
-            return (
-              <React.Fragment>
-                <Video>
-                  <section className="Intro">
-                    <div className="Container">
-                      <div className="Intro-Inner">
-                        <Welcome />
-                        <FormTran
-                          addUser={addUser}
-                          activePupop={this.handlePopupToggle}
-                        />
-                      </div>
-                    </div>
-                  </section>
-                </Video>
-                {
-                  this.state.popupActive ? <Popup
-                    title="Регистрация прошла успешно"
-                    activePupop={this.handlePopupToggle}
-                    handleClickPopupButton={this.handleGoToPage} /> : null
-                }
-              </React.Fragment>
-            )
-          }
-        }
-      </Consumer>
-    )
-  }
+      {
+        props.joke.alert ?
+          <AlertTran alert="Шутка про Чака Норриса загрузилась. Уведомление исчезнет через 5 секунд" />
+          : null
+      }
+    </React.Fragment>
+  )
 }
 
 export default Registration

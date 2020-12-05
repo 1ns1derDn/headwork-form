@@ -1,9 +1,34 @@
 import React from 'react'
-import { Consumer } from '../context/context'
+import { connect } from 'react-redux'
+
 import UserListItem from '../UserListItem'
 import './UserList.scss'
 
-const UserList = () => {
+const UserList = (props) => {
+  const renderUsers = (
+    props.users.map((user, index) => {
+      const { userName, userGender, userCreditCard, userCoupon, date } = user
+      return (
+        <UserListItem
+          key={index}
+          name={userName}
+          gender={userGender}
+          creditCard={userCreditCard}
+          cupon={userCoupon}
+          date={date.getFormatDate()}
+          clzs={
+            {
+              nameClazz: "UserList-Name",
+              genderClazz: "UserList-Gender",
+              cuponClazz: "UserList-Cupon",
+              dateClazz: "UserList-Date"
+            }
+          }
+        />
+      )
+    })
+  )
+
   return (
     <div className="UserList">
       <div className="UserList-Head">
@@ -14,38 +39,14 @@ const UserList = () => {
       </div>
 
       <div className="UserList-Content">
-        <Consumer>
-          {
-            ({users}) => {
-              return (
-                users.map((user, index) => {
-                  const {userName, userGender, userCreditCard, userCoupon, date} = user
-                  return (
-                    <UserListItem
-                      key={index}
-                      name={userName}
-                      gender={userGender}
-                      creditCard={userCreditCard}
-                      cupon={userCoupon}
-                      date={date.getFormatDate()}
-                      clzs={
-                        {
-                          nameClazz: "UserList-Name",
-                          genderClazz: "UserList-Gender",
-                          cuponClazz: "UserList-Cupon",
-                          dateClazz: "UserList-Date"
-                        }
-                      }
-                    />
-                  )
-                })
-              )
-            }
-          }
-        </Consumer>
+        {renderUsers}
       </div>
     </div>
   )
 }
 
-export default UserList
+const mapStateToProps = (state) => ({
+  users: state.users
+})
+
+export default connect(mapStateToProps)(UserList)

@@ -1,7 +1,7 @@
 import React from 'react'
 import './ButtonTran.scss'
 
-const ButtonTran = ({ clazz, handleClick, textHtml, refLink, children }) => {
+const ButtonTran = ({ clazz, handleClick, refLink, children }) => {
 
   const classes = ["ButtonTran"]
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import BlockTran from '../BlockTran'
+import BlockTran from '../UI/BlockTran'
 import './UserListItem.scss'
 
 const UserListItem = (props) => {
